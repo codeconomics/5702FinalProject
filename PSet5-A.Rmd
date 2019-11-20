@@ -23,17 +23,18 @@ Zihe Wang - zw2624
 b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this.)
 
 
+
 ### 2. The Questions
 
 [6 points]
 
 List three questions that you hope you will be able to answer from your research.
 
-a)
+a) Will high tobacco tax influence the amount of cigrette consumption?
 
-b)
+b) Are people with lower education level tends to smoke more cigrettes?
 
-c)
+c) Are "poorer' people tends to smoke more?
 
 ### 3. Which output format do you plan to use to submit the project? 
 
@@ -54,11 +55,19 @@ shiny app: https://shiny.rstudio.com/
 
 (Remember that it's ok to have pieces of the project that don't fit into the chosen output format; in those cases you can provide links to the relevant material.)
 
+We are considering html right now since we might have an interactive map.
+
 ### 4. The Data
+
+[5 points]
 
 What is your data source?  What is your method for importing data? Please be specific. Provide relevant information such as any obstacles you're encountering and what you plan to do to overcome them.
 
-[5 points]
+We get most of our data from Centers for Disease Control and Prevention (CDC) and also get the economic data from Bureau of Labor Statistics. There are csv files that we could download directly from the first website. For the second website, although we don't have a csv file, since we only need a few data from it, we just copy and paste the data.
+
+https://nccd.cdc.gov/STATESystem/rdPage.aspx?rdReport=OSH_State.CustomReports
+https://www.bls.gov/data/#unemployment
+
 
 
 ### 5. Provide a short summary, including 2-3 graphs, of your initial investigations. 
