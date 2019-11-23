@@ -1,8 +1,9 @@
 ---
-author: Yuge Shen, Shengqing Xia, Zhanming Zhang, Zihe Wang
 title: "EDAV Fall 2019 PSet 5, part A"
-output: html_document
-
+author: "Yuge Shen, Shengqing Xia, Zhanming Zhang, Zihe Wang"
+output:
+  pdf_document: default
+  html_document: default
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = TRUE)
@@ -14,14 +15,25 @@ This assignment is designed to help you get started on the final project. Be sur
 
 [2 points]
 
-a) Who's on the team? (Include names and UNIs)
+a) Who's on the team? (Include names and UNIs) 
+
 Yuge Shen - ys3280
+
 Shengqing Xia - sx2230
+
 Zhanming Zhang - zz2699
+
 Zihe Wang - zw2624
 
 b) How do you plan to divide up the work? (Grading is on a group basis. The point of asking is to encourage you to think about this.)
 
+Since we intend to use HTML as the output format, we plan to divide our work this way.
+
+We design the output visualization together.
+
+Code the main graph : Yuge Shen, Zhanming Zhang
+
+Add interactions and other layout features : Zihe Wang, Shengqing Xia
 
 
 ### 2. The Questions
@@ -73,3 +85,41 @@ https://www.bls.gov/data/#unemployment
 ### 5. Provide a short summary, including 2-3 graphs, of your initial investigations. 
 
 [10 points]
+The first plot shows whether the state would be a variable which influence the trends of tobacco's tax ranging from 1970 to 2019. We can see that most of the states fluctuated in a similar pattern, while there were 3 states had extremely high value in year 1984, 1989 and 1993. So we may focus on these extreme cases and try to figure out what was benhind the data and what happened in that 3 years.
+```{r }
+library(ggplot2)
+tb = read.csv('TobaccoTax.csv', header = TRUE)
+ggplot(data = tb, aes(x = Year, y = Data.Value, color = Location.Description)) +
+  geom_line() +
+  ggtitle("Tax by States and Years") 
+```
+
+The second plot shows that variable 'Response' had the most missing values. And there were only 2 missing patterns, while the most frequent one was missing only 'Response' data.
+```{r }
+library(naniar)
+library(tidyverse)
+library(ggplot2)
+library(extracat)
+library(mi)
+library(dplyr)
+library(ggmosaic)
+library(tidyquant)
+library(usmap)
+cg = read.csv('./TobaccoUse.csv',na.strings = "*")
+
+visna(cg)
+```
+
+```{r}
+cg = cg %>% replace_with_na_at(.vars = c("Data.Value"), condition = ~.x %in% ("*"))
+```
+We want to figure out how people's education level will influence the amount of cigarette they smoke. As the boxplot shown, people with education level less than 12 grades had the highest medium value of tobacco use, moreover, the 25 percentile of them was much larger than the 75 percentile of people with education level higher tha 12 grades, which suggests that there is a realtionship between education level and the use of cigarette that people with lower education level tended to smoke more.
+```{r}
+ggplot(data = cg, aes(x = Education, y = Data.Value)) + 
+  geom_boxplot() +
+  ggtitle("Use of Tobacco vs Education Level")
+```
+
+Furthermore, we want to discuss whether "poorer' people tends to smoke more and if there is a negative relationship between tobacco tax and the amount of cigrette consumption.
+
+
