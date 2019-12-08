@@ -17,7 +17,7 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
-tb = read.csv('./TobaccoTax.csv')
+tb = read.csv('TobaccoTax.csv')
 ggplot(data = tb, aes(x = Year, y = Data.Value, color = Location.Description)) +
   geom_line() +
   ggtitle("Tax by States and Years")
@@ -34,11 +34,11 @@ library(dplyr)
 library(ggmosaic)
 library(tidyquant)
 library(usmap)
-cg = read.csv('./TobaccoUse.csv')
+cg = read.csv('TobaccoUse.csv', na.strings = "*")
 
 visna(cg)
 ```
-```
+
 ```{r}
 cg = cg %>% replace_with_na_at(.vars = c("Data.Value"), condition = ~.x %in% ("*"))
 ```
