@@ -32,7 +32,7 @@
 		width:auto;
 		padding:4px;
 		color:white;
-		opacity:0;
+		opacity:1;
 	}
 	#tooltip table{
 		table-layout:fixed;
@@ -55,38 +55,58 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script>
 
-  function getData(dataframe){
-    l = []
-    for(int i = 0; i < 50; i++){
-      l = l.concat(Random()*100)
-    }
-    return l
-  }
-
-	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-		return "<h4>"+n+"</h4><table>"+
-			"<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
-			"<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
-			"<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
-			"</table>";
-	}
-
-	var sampleData ={};	/* Sample random data. */
-	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+  var states = ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
 	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
 	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
 	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
 	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-		.forEach(function(d){
-      var low=Math.round(100*Math.random()),
-				mid=Math.round(100*Math.random()),
-				high=Math.round(100*Math.random());
-			sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
-					avg:Math.round((low+mid+high)/3), color:d3.interpolate("#C5E1A5","#C5E1A5")(0.8)};
-		});
+
+  function getData(){
+    dict = {}
+    for(var i = 0; i <= 50; i++){
+      dict[states[i]] = {}
+      for(var year = 2011; year < 2019; year++){
+        dict[states[i]][year] = Math.random()*100
+      }
+    }
+    return dict;
+  }
+
+
+	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+		return "<h4>"+n+"</h4><table>"+
+      "<tr><td>Year</td><td>"+(d.Year)+"</td></tr>"+
+			"<tr><td>Rate</td><td>"+(d.Rate)+"</td><td>%</td></tr>"+
+
+			"</table>";
+	}
+
+  value_dict = getData()
+  console.log(value_dict["CA"][2011])
+
+	var sampleData ={};	/* Sample random data. */
+  for(var y = 2011; y < 2019; y++){
+    sampleData[y] = {};
+  	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+  	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+  	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+  	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+  	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+  		.forEach(function(d){
+        // var low=Math.round(100*Math.random()),
+				// mid=Math.round(100*Math.random()),
+				// high=Math.round(100*Math.random());
+			// sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
+			// 		avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
+      console.log(value_dict[d][y])
+      var rate = value_dict[d][y];
+      sampleData[2011][d]={Rate: rate, Year: y, color:d3.interpolate("#E8F8F5", "#17A589")(rate/100)};
+  		});
+  }
 
 	/* draw states on id #statesvg */
-	uStates.draw("#statesvg", sampleData, tooltipHtml);
+  var year = 2011
+	uStates.draw("#statesvg", sampleData[year], tooltipHtml);
 
 	d3.select(self.frameElement).style("height", "600px");
 </script>
