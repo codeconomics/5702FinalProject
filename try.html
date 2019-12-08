@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-	.state{
+	.state {
 		fill: none;
 		stroke: #a9a9a9;
 		stroke-width: 1;
 	}
-	.state:hover{
-		fill-opacity:0.5;
+
+	.state:hover {
+		fill-opacity: 0.5;
 	}
+
 	#tooltip {
 		position: absolute;
 		text-align: center;
@@ -20,95 +22,109 @@
 		border-radius: 2px;
 		pointer-events: none;
 	}
-	#tooltip h4{
-		margin:0;
-		font-size:14px;
+
+	#tooltip h4 {
+		margin: 0;
+		font-size: 14px;
 	}
-	#tooltip{
-		background:rgba(0,0,0,0.9);
-		border:1px solid grey;
-		border-radius:5px;
-		font-size:12px;
-		width:auto;
-		padding:4px;
-		color:white;
-		opacity:1;
+
+	#tooltip {
+		background: rgba(0, 0, 0, 0.9);
+		border: 1px solid grey;
+		border-radius: 5px;
+		font-size: 12px;
+		width: auto;
+		padding: 4px;
+		color: white;
+		opacity: 1;
 	}
-	#tooltip table{
-		table-layout:fixed;
+
+	#tooltip table {
+		table-layout: fixed;
 	}
-	#tooltip tr td{
-		padding:0;
-		margin:0;
+
+	#tooltip tr td {
+		padding: 0;
+		margin: 0;
 	}
-	#tooltip tr td:nth-child(1){
-		width:50px;
+
+	#tooltip tr td:nth-child(1) {
+		width: 50px;
 	}
-	#tooltip tr td:nth-child(2){
-		text-align:center;
+
+	#tooltip tr td:nth-child(2) {
+		text-align: center;
 	}
 </style>
+
 <body>
-<div id="tooltip"></div><!-- div to hold tooltip. -->
-<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-<script src="uStates.js"></script> <!-- creates uStates. -->
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script>
+	<div id="tooltip"></div><!-- div to hold tooltip. -->
+	<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+	<script src="Scripts/uStates.js"></script> <!-- creates uStates. -->
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script>
 
-  var states = ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
-	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
-	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
-	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+		// Read file using D3 https://stackoverflow.com/questions/30610675/python-pandas-equivalent-in-javascript/30611208#30611208
 
-  function getData(){
-    dict = {}
-    for(var i = 0; i <= 50; i++){
-      dict[states[i]] = {}
-      for(var year = 2011; year < 2019; year++){
-        dict[states[i]][year] = Math.random()*100
-      }
-    }
-    return dict;
-  }
+		d3.csv('Data/DataCombined.csv').then(function(data){
+			console.log(data[0])
+		}
+		)
+
+		var states = ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+			"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+			"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+			"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+			"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+
+		function getData() {
+			dict = {}
+			for (var i = 0; i <= 50; i++) {
+				dict[states[i]] = {}
+				for (var year = 2011; year < 2019; year++) {
+					dict[states[i]][year] = Math.random() * 100
+				}
+			}
+			return dict;
+		}
 
 
-	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-		return "<h4>"+n+"</h4><table>"+
-      "<tr><td>Year</td><td>"+(d.Year)+"</td></tr>"+
-			"<tr><td>Rate</td><td>"+(d.Rate)+"</td><td>%</td></tr>"+
+		function tooltipHtml(n, d) {	/* function to create html content string in tooltip div. */
+			return "<h4>" + n + "</h4><table>" +
+				"<tr><td>Year</td><td>" + (d.Year) + "</td></tr>" +
+				"<tr><td>Rate</td><td>" + (d.Rate) + "</td><td>%</td></tr>" +
 
-			"</table>";
-	}
+				"</table>";
+		}
 
-  value_dict = getData()
-  console.log(value_dict["CA"][2011])
+		value_dict = getData()
+		console.log(value_dict["CA"][2011])
 
-	var sampleData ={};	/* Sample random data. */
-  for(var y = 2011; y < 2019; y++){
-    sampleData[y] = {};
-  	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-  	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
-  	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
-  	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
-  	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-  		.forEach(function(d){
-        // var low=Math.round(100*Math.random()),
-				// mid=Math.round(100*Math.random()),
-				// high=Math.round(100*Math.random());
-			// sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
-			// 		avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
-      console.log(value_dict[d][y])
-      var rate = value_dict[d][y];
-      sampleData[2011][d]={Rate: rate, Year: y, color:d3.interpolate("#E8F8F5", "#17A589")(rate/100)};
-  		});
-  }
+		var sampleData = {};	/* Sample random data. */
+		for (var y = 2011; y < 2019; y++) {
+			sampleData[y] = {};
+			["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+				"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+				"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+				"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+				"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+				.forEach(function (d) {
+					// var low=Math.round(100*Math.random()),
+					// mid=Math.round(100*Math.random()),
+					// high=Math.round(100*Math.random());
+					// sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]),
+					// 		avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)};
+					console.log(value_dict[d][y])
+					var rate = value_dict[d][y];
+					sampleData[2011][d] = { Rate: rate, Year: y, color: d3.interpolate("#E8F8F5", "#17A589")(rate / 100) };
+				});
+		}
 
-	/* draw states on id #statesvg */
-  var year = 2011
-	uStates.draw("#statesvg", sampleData[year], tooltipHtml);
+		/* draw states on id #statesvg */
+		var year = 2011
+		uStates.draw("#statesvg", sampleData[year], tooltipHtml);
 
-	d3.select(self.frameElement).style("height", "600px");
-</script>
+		d3.select(self.frameElement).style("height", "600px");
+	</script>
 
 </body>
