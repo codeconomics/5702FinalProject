@@ -60,13 +60,31 @@
 <body>
 	<div id="tooltip"></div><!-- div to hold tooltip. -->
 	<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-	<script src="Scripts/uStates.js"></script> <!-- creates uStates. -->
+	<script src="Scripts/uStates.js"></script> <!-- creates uStates. from http://bl.ocks.org/NPashaP/a74faf20b492ad377312-->
 	<script src="https://d3js.org/d3.v5.min.js"></script>
 	<script>
 
 		// Read file using D3 https://stackoverflow.com/questions/30610675/python-pandas-equivalent-in-javascript/30611208#30611208
 
-		d3.csv('Data/DataCombined.csv').then(function(data){
+		var rowConverter = function(d) {
+			return {
+				Year : Year,
+				State : State,
+				Unemployment : +Unemployment,
+				TaxRate : +TaxRate,
+				SampleSize : +SampleSize,
+				Gender : Gender,
+				Age : Age,
+				Race : Race,
+				Education : Education,
+				SmokeRate : +SmokeRate,
+				LowConf : +LowConf,
+				HighConf : +HighConf
+
+			}
+		}
+
+		d3.csv('Data/DataCombined.csv',[, rowConverter]).then(function(data){
 			console.log(data[0])
 		}
 		)
