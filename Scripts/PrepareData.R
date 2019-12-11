@@ -39,7 +39,33 @@ data <- merge(data, use_data, all=T)
 
 ### Only data with different races are missing
 
+library(extracat)
+visna(data)
+
 write.csv(data, file = './Data/DataCombined.csv', row.names = F)
+
+smokerateonly <- data %>% filter(Gender == 'Overall' & Age == 'All Ages' & Race == 'All Races') %>% select(Year, State, SmokeRate)
+write.csv(smokerateonly, file='./Data/SmokeRateData.csv', row.names = F)
+
+
+# create the range of colors
+for (year in c(2011:2018)){
+   l = max(smokerateonly[smokerateonly$Year == year,]$SmokeRate) - min(smokerateonly[smokerateonly$Year == year,]$SmokeRate)
+   m = min(smokerateonly[smokerateonly$Year == year,]$SmokeRate)
+   print(paste(year, ':{','mean:',m,',','range',l,'}', sep=''))
+}
+
+max(smokerateonly$SmokeRate)
+min(smokerateonly$SmokeRate)
+mean(smokerateonly$SmokeRate)
+
+smokerateonly <- data %>% filter(Gender == 'Overall' & Age == 'All Ages' & Race == 'All Races') %>% select(Year, State, SmokeRate, TaxRate)
+
+# Create the table with data wanted: 
+selected_data <- data %>% filter(Gender == 'Overall' & Age == 'All Ages' & Race == 'All Races') %>% select(Year, State, SmokeRate, TaxRate, Unemployment)
+write.csv(selected_data, file='./Data/SelectedData.csv', row.names = F)
+
+
 
 
 
